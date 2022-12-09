@@ -1,13 +1,16 @@
 window.addEventListener("load", () => {
 	const canvas = document.getElementById("canvas");
 	const context = canvas.getContext("2d");
+	const randomizeButton = document.getElementById("randomizeBtn");
 
 	//canvas settings
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	context.strokeStyle = "green";
-	context.lineWidth = 10;
 	context.lineCap = "round";
+	context.shadowColor = "rgba(0,0,0,0.7)";
+	context.shadowOffsetX = 10;
+	context.shadowOffsetY = 5;
+	context.shadowBlur = 10;
 
 	//canvas center
 	const cx = canvas.width / 2;
@@ -15,12 +18,14 @@ window.addEventListener("load", () => {
 
 	//effect settings
 	const effect = {
-		size: 200,
-		sides: 5,
-		maxDepth: 3,
-		spread: 0.8,
+		size: Math.min(canvas.width, canvas.height) * 0.25,
+		maxDepth: 4,
 		branches: 2,
-		scale: 0.5,
+		sides: 5,
+		spread: 0.5,
+		scale: 0.7,
+		color: `hsl(${Math.random() * (360 - 0) - 0}, 100%, 50%)`,
+		lineWidth: Math.floor(Math.random() * 20 - 10),
 	};
 
 	function drawBranch(depth) {
@@ -53,16 +58,17 @@ window.addEventListener("load", () => {
 	}
 
 	function drawFractal() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.save();
+		context.lineWidth = effect.lineWidth;
+		context.strokeStyle = effect.color;
 		context.translate(cx, cy);
-		context.rotate(0);
 		for (let i = 0; i < effect.sides; i++) {
 			context.rotate((Math.PI * 2) / effect.sides);
 			drawBranch(0);
 		}
 		context.restore();
 	}
-	// drawFractal();
 
 	function drawLine(x, y) {
 		context.beginPath();
@@ -76,5 +82,18 @@ window.addEventListener("load", () => {
 		context.rotate(angle);
 		context.scale(sx, sy);
 	}
+
+	function randomizeFractals() {
+		effect.sides = Math.floor(Math.random() * 7 + 2);
+		effect.scale = Math.random() * 0.2 + 0.4;
+		effect.spread = Math.random() * 2.9 + 0.1;
+		effect.color = `hsl(${Math.random() * (360 - 0) - 0}, 100%, 50%)`;
+		effect.lineWidth = Math.floor(Math.random() * 20 - 10);
+	}
+
+	randomizeButton.addEventListener("click", () => {
+		randomizeFractals();
+		drawFractal();
+	});
 	drawFractal();
 });
