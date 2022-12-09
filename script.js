@@ -20,20 +20,13 @@ window.addEventListener("load", () => {
 		maxDepth: 50,
 	};
 
-	// notes
-	// -----
-	// canvas translate, scale, rotate adds up
-	//
-	// to make it not affect other shapes,
-	// we can use save and restore
 	context.save();
 	context.translate(cx, cy);
 	context.rotate(0);
-	// context.fillRect(0, 0, canvas.width, canvas.height);
 
 	function drawBranch(depth) {
 		if (depth > effect.maxDepth) return;
-		doTransformations(100, 0, 0.5, 0.9, 0.9);
+		doTransformations(75, 0, 0.2, 0.9, 0.9);
 		drawLine(0, 0);
 		drawBranch(depth + 1);
 	}
@@ -51,9 +44,9 @@ window.addEventListener("load", () => {
 	}
 
 	function doTransformations(tx, ty, angle, sx, sy) {
-		context.translate(100, 0);
-		context.rotate(0.5);
-		context.scale(0.9, 0.9);
+		context.translate(tx, ty);
+		context.rotate(angle);
+		context.scale(sx, sy);
 	}
 
 	context.restore();
