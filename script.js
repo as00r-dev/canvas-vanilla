@@ -3,8 +3,8 @@ window.addEventListener("load", () => {
 	const context = canvas.getContext("2d");
 
 	//canvas settings
-	canvas.width = window.innerWidth * 0.8;
-	canvas.height = window.innerHeight * 0.8;
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 	context.strokeStyle = "green";
 	context.lineWidth = 10;
 	context.lineCap = "round";
@@ -17,7 +17,10 @@ window.addEventListener("load", () => {
 	const effect = {
 		size: 200,
 		sides: 5,
-		maxDepth: 50,
+		maxDepth: 3,
+		spread: 0.5,
+		branches: 2,
+		scale: 0.5,
 	};
 
 	context.save();
@@ -26,9 +29,31 @@ window.addEventListener("load", () => {
 
 	function drawBranch(depth) {
 		if (depth > effect.maxDepth) return;
-		doTransformations(75, 0, 0.2, 0.9, 0.9);
-		drawLine(0, 0);
-		drawBranch(depth + 1);
+
+		for (let i = 0; i < effect.branches; i++) {
+			context.save();
+			drawLine(0, 0);
+			doTransformations(
+				effect.size - (effect.size / effect.branches) * i,
+				0,
+				effect.spread,
+				effect.scale,
+				effect.scale
+			);
+			drawBranch(depth + 1);
+			context.restore();
+			context.save();
+			drawLine(0, 0);
+			doTransformations(
+				effect.size - (effect.size / effect.branches) * i,
+				0,
+				-effect.spread,
+				effect.scale,
+				effect.scale
+			);
+			drawBranch(depth + 1);
+			context.restore();
+		}
 	}
 	drawBranch(0);
 
