@@ -59,8 +59,8 @@ window.addEventListener("load", () => {
 	}
 
 	function drawFractal() {
-		fix_dpi();
 		context.clearRect(0, 0, canvas.width, canvas.height);
+		fix_dpi();
 		context.save();
 		context.lineWidth = effect.lineWidth;
 		context.strokeStyle = effect.color;
