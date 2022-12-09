@@ -2,7 +2,6 @@ window.addEventListener("load", () => {
 	const canvas = document.getElementById("canvas");
 	const context = canvas.getContext("2d");
 	const randomizeButton = document.getElementById("randomizeBtn");
-	const dpi = window.devicePixelRatio;
 
 	//canvas settings
 	canvas.width = window.innerWidth;
@@ -60,7 +59,6 @@ window.addEventListener("load", () => {
 
 	function drawFractal() {
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		fix_dpi();
 		context.save();
 		context.lineWidth = effect.lineWidth;
 		context.strokeStyle = effect.color;
@@ -91,17 +89,6 @@ window.addEventListener("load", () => {
 		effect.spread = Math.random() * 2.9 + 0.1;
 		effect.color = `hsl(${Math.random() * (360 - 0) - 0}, 100%, 50%)`;
 		effect.lineWidth = Math.floor(Math.random() * 20 - 10);
-	}
-
-	function fix_dpi() {
-		let style_height = +getComputedStyle(canvas)
-			.getPropertyValue("height")
-			.slice(0, -2);
-		let style_width = +getComputedStyle(canvas)
-			.getPropertyValue("width")
-			.slice(0, -2);
-		canvas.setAttribute("height", style_height * dpi);
-		canvas.setAttribute("width", style_width * dpi);
 	}
 
 	randomizeButton.addEventListener("click", () => {
