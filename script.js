@@ -18,14 +18,10 @@ window.addEventListener("load", () => {
 		size: 200,
 		sides: 5,
 		maxDepth: 3,
-		spread: 0.5,
+		spread: 0.8,
 		branches: 2,
 		scale: 0.5,
 	};
-
-	context.save();
-	context.translate(cx, cy);
-	context.rotate(0);
 
 	function drawBranch(depth) {
 		if (depth > effect.maxDepth) return;
@@ -55,11 +51,18 @@ window.addEventListener("load", () => {
 			context.restore();
 		}
 	}
-	drawBranch(0);
 
-	// for (let i = 0; i < sides; i++) {
-	// 	context.rotate((Math.PI * 2) / sides);
-	// }
+	function drawFractal() {
+		context.save();
+		context.translate(cx, cy);
+		context.rotate(0);
+		for (let i = 0; i < effect.sides; i++) {
+			context.rotate((Math.PI * 2) / effect.sides);
+			drawBranch(0);
+		}
+		context.restore();
+	}
+	// drawFractal();
 
 	function drawLine(x, y) {
 		context.beginPath();
@@ -73,6 +76,5 @@ window.addEventListener("load", () => {
 		context.rotate(angle);
 		context.scale(sx, sy);
 	}
-
-	context.restore();
+	drawFractal();
 });
